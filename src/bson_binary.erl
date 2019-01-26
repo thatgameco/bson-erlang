@@ -186,13 +186,13 @@ get_values(Bin, Acc, Type) ->
 %% @private
 -spec put_binary(bintype(), binary()) -> binary().
 put_binary(BinType, Bin) ->
-  Tag = case BinType of bin -> 0; function -> 1; uuid -> 3; md5 -> 5; userdefined -> 128 end,
+  Tag = case BinType of bin -> 0; function -> 1; uuid -> 4; md5 -> 5; userdefined -> 128 end,
   <<?put_int32(byte_size(Bin)), Tag:8, Bin/binary>>.
 
 %% @private
 -spec get_binary(binary()) -> {bintype(), binary(), binary()}.
 get_binary(<<?get_int32(Size), Tag:8, Bin/binary>>) ->
-  BinType = case Tag of 0 -> bin; 1 -> function; 3 -> uuid; 5 -> md5; 128 -> userdefined end,
+  BinType = case Tag of 0 -> bin; 1 -> function; 3 -> uuid; 4 -> uuid; 5 -> md5; 128 -> userdefined end,
   <<VBin:Size/binary, Bin1/binary>> = Bin,
   {BinType, VBin, Bin1}.
 
